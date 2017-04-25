@@ -5,6 +5,9 @@
 /* This program is produced by Qiangfu Zhao.                 */
 /* You are free to use it for educational purpose            */
 /*************************************************************/
+
+// perceptron learning
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

@@ -19,7 +19,7 @@
 #define n_sample      3
 #define eta           0.5
 #define lambda        1.0
-#define desired_error 0.1
+#define desired_error 0.0003
 #define sigmoid(x)    (2.0/(1.0+exp(-lambda*x))-1.0)
 #define frand()       (rand()%10000/10001.0)
 #define randomize()   srand((unsigned int)time(NULL))
@@ -29,11 +29,21 @@ double x[n_sample][N]={
   {2,-5,-1},
   {-5,5,-1},
 };
+// double x[n_sample][N]={
+//     {10,2,-1},
+//     {2,-5,-1},
+//     {-5,5,-1},
+// };
 double d[n_sample][R]={
   {1,-1,-1},
   {-1,1,-1},
   {-1,-1,1},
 };
+// double d[n_sample][R]={
+//     {1,-1,-1},
+//     {-1,1,-1},
+//     {-1,-1,1},
+// };
 double w[R][N];
 double o[R];
 
@@ -55,16 +65,19 @@ main(){
     for(p=0; p<n_sample; p++){
       FindOutput(p);
       for(i=0;i<R;i++){
+        // printf("%f ", o[i]);
 	Error+=0.5*pow(d[p][i]-o[i],2.0);
       }
+      // printf("\n");
       for(i=0;i<R;i++){
 	delta=(d[p][i]-o[i])*(1-o[i]*o[i])/2;
 	for(j=0;j<N;j++){
 	  w[i][j]+=eta*delta*x[p][j];
 	}
       }
-    } 
+    }
     printf("Error in the %d-th learning cycle=%f\n",q,Error);
+    PrintResult();
   }
   PrintResult();
 }
@@ -104,9 +117,9 @@ void FindOutput(int p){
 /*************************************************************/
 double DiscreteFunction(double x){
     if(x <= 0){
-        return(-1);
+        return(-1.0);
     } else {
-        return(1);
+        return(1.0);
     }
 }
 
