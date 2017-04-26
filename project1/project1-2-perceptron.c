@@ -11,8 +11,7 @@
 /*************************************************************/
 
 
-// delta rule 適用version 
-// sigmoid funtion 適用
+// perceptron rule 適用version (delta rule は使っていない)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +23,7 @@
 #define n_sample      3
 #define eta           0.5
 #define lambda        1.0
-#define desired_error 0.1
+#define desired_error 0.0003
 #define sigmoid(x)    (2.0/(1.0+exp(-lambda*x))-1.0)
 #define frand()       (rand()%10000/10001.0)
 #define randomize()   srand((unsigned int)time(NULL))
@@ -70,17 +69,22 @@ main(){
     for(p=0; p<n_sample; p++){
       FindOutput(p);
       for(i=0;i<R;i++){
+        // printf("%f ", o[i]);
 	Error+=0.5*pow(d[p][i]-o[i],2.0);
       }
       // printf("\n");
       for(i=0;i<R;i++){
-        delta=(d[p][i]-o[i])*(1-o[i]*o[i])/2;
+	// delta=(d[p][i]-o[i])*(1-o[i]*o[i])/2;
+        learning = eta*(d[p][i]-o[i]);
 	for(j=0;j<N;j++){
-	  w[i][j]+=eta*delta*x[p][j];
+	  w[i][j]+=learning*x[p][j];
 	}
       }
     }
     printf("Error in the %d-th learning cycle=%f\n",q,Error);
+
+    // 重み出力用
+    // PrintResult();
   }
   PrintResult();
 }
@@ -109,8 +113,8 @@ void FindOutput(int p){
     for(j=0;j<N;j++){
       temp+=w[i][j]*x[p][j];
     }
-    o[i]=sigmoid(temp);
-    // o[i]=DiscreteFunction(temp);
+    // o[i]=sigmoid(temp);
+    o[i]=DiscreteFunction(temp);
   }
 }
 
