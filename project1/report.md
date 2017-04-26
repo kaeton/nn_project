@@ -1,4 +1,5 @@
 # Project1-1
+## sigmoid function case
 Error in the 130-th learning cycle=0.000000
 Error in the 130-th learning cycle=0.002492
 Error in the 130-th learning cycle=0.005029
@@ -6,6 +7,15 @@ Error in the 130-th learning cycle=0.009920
 
 the weight of perceptron learning rule
 6.419696 6.375360 9.690702 
+
+## discrete function case
+Error in the 6-th learning cycle=0.000000
+Error in the 6-th learning cycle=0.000000
+Error in the 6-th learning cycle=0.000000
+Error in the 6-th learning cycle=0.000000
+
+the weight of perceptron learning rule
+2.486051 1.261674 2.940506 
 
 # Project1-2
 ||delta learning rule| perceptron learning rule|
