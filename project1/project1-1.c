@@ -13,8 +13,8 @@
 #include <math.h>
 #include <float.h>
 
-#define I             4
-#define n_sample      8
+#define I             3
+#define n_sample      4
 #define eta           0.5
 #define lambda        1.0
 #define desired_error 0.01
@@ -23,23 +23,20 @@
 #define randomize()   srand((unsigned int)time(NULL))
 
 double x[n_sample][I]={
-  { 1, 1, 1,-1},
-  { 1, 1,-1,-1},
-  { 1,-1, 1,-1},
-  { 1,-1,-1,-1},
-  {-1, 1, 1,-1},
-  {-1, 1,-1,-1},
-  {-1,-1, 1,-1},
-  {-1,-1,-1,-1},
+    {0,0,-1},
+    {0,1,-1},
+    {1,0,-1},
+    {1,1,-1},
 };
 
 double w[I];
-double d[n_sample]={1,1,1,-1,1,-1,-1,-1};
+double d[n_sample]={-1,-1,-1,1};
 double o;
 
 void Initialization(void);
 void FindOutput(int);
 void PrintResult(void);
+double DiscreteFunction(double);
 
 main(){
   int    i,p,q=0;
@@ -82,6 +79,18 @@ void FindOutput(int p){
 
   for(i=0;i<I;i++) temp += w[i]*x[p][i];
   o = sigmoid(temp);
+  // o = DiscreteFunction(temp);
+}
+
+/*************************************************************/
+/* discrete model of activation function                     */
+/*************************************************************/
+double DiscreteFunction(double x){
+    if(x <= 0){
+        return(-1.0);
+    } else {
+        return(1.0);
+    }
 }
 
 /*************************************************************/
