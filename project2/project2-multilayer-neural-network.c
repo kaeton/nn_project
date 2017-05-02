@@ -19,7 +19,7 @@
 #define I             5
 #define J             3
 #define K             1
-#define n_sample      4
+#define n_sample      16
 #define eta           0.5
 #define lambda        1.0
 #define desired_error 0.001
@@ -45,7 +45,7 @@ double x[n_sample][I]={
   {1,1,1,0,-1},
   {1,1,1,1,-1}
 };
-double d[n_sample][K]={0,1,1,0};
+double d[n_sample][K]={1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1};
 double v[J][I],w[K][J];
 double y[J];
 double o[K];
