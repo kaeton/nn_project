@@ -23,7 +23,7 @@
 #define n_sample      3
 #define eta           0.5
 #define lambda        1.0
-#define desired_error 0.0003
+#define desired_error 0.1
 #define sigmoid(x)    (2.0/(1.0+exp(-lambda*x))-1.0)
 #define frand()       (rand()%10000/10001.0)
 #define randomize()   srand((unsigned int)time(NULL))

@@ -5,9 +5,6 @@
 /* This program is produced by Qiangfu Zhao.                 */
 /* You are free to use it for educational purpose            */
 /*************************************************************/
-
-// perceptron learning
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -36,12 +33,10 @@ double o;
 void Initialization(void);
 void FindOutput(int);
 void PrintResult(void);
-double DiscreteFunction(double);
 
 main(){
   int    i,p,q=0;
   double delta,Error=DBL_MAX;
-  double LearningSignal;
 
   Initialization();
   while(Error>desired_error){
@@ -50,9 +45,9 @@ main(){
     for(p=0; p<n_sample; p++){
       FindOutput(p);
       Error+=0.5*pow(d[p]-o,2.0);
-      LearningSignal=eta*(d[p]-o);
       for(i=0;i<I;i++){
-        w[i]+=LearningSignal*x[p][i];
+	delta=(d[p]-o)*(1-o*o)/2;
+	w[i]+=eta*delta*x[p][i];
       }
       printf("Error in the %d-th learning cycle=%f\n",q,Error);
     } 
@@ -78,19 +73,7 @@ void FindOutput(int p){
   double temp=0;
 
   for(i=0;i<I;i++) temp += w[i]*x[p][i];
-  // o = sigmoid(temp);
-  o = DiscreteFunction(temp);
-}
-
-/*************************************************************/
-/* discrete model of activation function                     */
-/*************************************************************/
-double DiscreteFunction(double x){
-    if(x <= 0){
-        return(-1.0);
-    } else {
-        return(1.0);
-    }
+  o = sigmoid(temp);
 }
 
 /*************************************************************/
