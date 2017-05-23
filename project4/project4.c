@@ -18,7 +18,7 @@
 #include <math.h>
 
 #define  I             4
-#define  M             2
+#define  M             3
 #define  P             150
 #define  alpha         0.5
 #define  n_update      20
@@ -192,7 +192,6 @@ void PrintResult(int q)
       printf("\n");
     }
   printf("\n\n");
-
 }
 
 /*************************************************************/
@@ -204,7 +203,6 @@ int main()
 
 
 /* Initialization of the connection weights */
-
   for(m=0; m<M; m++)
     { norm=0;
       for(i=0; i<I; i++)
@@ -218,7 +216,6 @@ int main()
   PrintResult(0);
     
 /* Unsupervised learning */
-
   for(q=0; q < n_update; q++)
     { for(p=0; p<P; p++)
 	{ s0 = 0;
@@ -246,7 +243,6 @@ int main()
     }
 
 /* Classify the training patterns */
-
   for(p=0; p<P; p++)
     { s0 = 0;
       for(m=0; m<M; m++)
