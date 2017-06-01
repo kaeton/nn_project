@@ -31,7 +31,7 @@
 
 double x[P][I],y[N],w[N][I];
 int    label0[P];
-char   label[N];
+char   label[N][2];
 
 void InputPattern(char *);
 void Initialization(void);
@@ -44,6 +44,7 @@ void PrintResult(void);
 /* Usage: Command FileName                                   */
 /*************************************************************/
 int main(int argc,char **argv){
+
 
   if(argc!=2){
     printf("Usage: %s FileName\n",argv[0]);
@@ -72,6 +73,8 @@ void InputPattern(char filename[]){
   int  i,p;
   FILE *fp;
   int  f[I];
+  int first_char;
+  int second_char;
   
 /* This part is used for input the example data */
 
@@ -86,8 +89,12 @@ void InputPattern(char filename[]){
       printf("%5.2f\t", x[p][i]);
     }
     fscanf(fp,"%d",&label0[p]);
-    printf("%c\n",
-	   (label0[p]<=25)?('A'+label0[p]):('0'+label0[p]-25));
+    first_char = label0[p] / 27;
+    second_char = label0[p] % 27 -1;
+    printf("%c%c\n",
+            'A'+first_char, 'A'+second_char);
+	   // (label0[p]<=25)?('A'+label0[p]):('0'+label0[p]-25));
+
   }
   fclose(fp);
 }
@@ -163,10 +170,13 @@ void SOFM(int n_update, double r1, double r2, int Nc1, int Nc2){
 /* Calibration                                               */
 /*************************************************************/
 void Calibration(void){
-  int p,i,n,n0;
+  int p,i,n,n0, first_char, second_char;
   double d, d0;
 
-  for(n=0;n<N;n++) label[n]='*';
+  for(n=0;n<N;n++){
+      label[n][0]='*';
+      label[n][1]='*';
+  }
 
   for(p=0;p<P;p++){
     d0=DBL_MAX;
@@ -179,7 +189,11 @@ void Calibration(void){
 	d0=d; n0=n;
       }
     }
-    label[n0]=(label0[p]<=25)?('A'+label0[p]):('0'+label0[p]-25);
+    // label[n0]=(label0[p]<=25)?('A'+label0[p]):('0'+label0[p]-25);
+    first_char = label0[p] / 27;
+    second_char = label0[p] % 27 -1;
+    label[n0][0] = 'A'+first_char;
+    label[n0][1] = 'A'+second_char;
   }
 }
 
@@ -193,7 +207,7 @@ void PrintResult(void){
   for(m1=0; m1<M1; m1++){
     if(m1%2 == 0) printf(" ");
     for(m2=0; m2<M2; m2++){
-      printf("%c ",label[m1*M2 + m2]);
+      printf("%c%c ",label[m1*M2 + m2][0],label[m1*M2 + m2][1]);
     }
     printf("\n");
   }

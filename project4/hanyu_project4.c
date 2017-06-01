@@ -20,8 +20,8 @@
 #define  I             4
 #define  M             3
 #define  P             150
-#define  alpha         0.7
-#define  n_update      2
+#define  alpha         0.5
+#define  n_update      20
 
 double w[M][I];
 double x[P][I]={
@@ -176,112 +176,108 @@ double x[P][I]={
   {6.2,3.4,5.4,2.3},
   {5.9,3.0,5.1,1.8}};
 
-double y[M];
+  double y[M];
 
-/*************************************************************/
-/* Print out the result of the q-th iteration                */
-/*************************************************************/
-void PrintResult(int q)
-{ int m, i;
+  /*************************************************************/
+  /* Print out the result of the q-th iteration                */
+  /*************************************************************/
+  void PrintResult(int q)
+  { int m, i;
 
-  printf("\n\n");
-  printf("Results in the %d-th iteration: \n", q);
-  for(m=0; m<M; m++)
+    printf("\n\n");
+    printf("Results in the %d-th iteration: \n", q);
+    for(m=0; m<M; m++)
     { for(i=0; i<I; i++)
-	printf("%5f ",w[m][i]);
+      printf("%5f ",w[m][i]);
       printf("\n");
     }
-  printf("\n\n");
-}
+    printf("\n\n");
+  }
 
-/*************************************************************/
-/* The main program                                          */
-/*************************************************************/
-int main()
-{ int m, m0, i, p, q;
-  double norm, s, s0, max[I]={0,0,0,0};
-  srand(10);
+  /*************************************************************/
+  /* The main program                                          */
+  /*************************************************************/
+  main()
+  { int m, m0, i, p, q, max[I] = {0,0,0,0};
+    double norm, s, s0;
 
-/* normalization of the input numbers */
-  for (m=0; m<P; m++){
-    for(i=0; i<I; i++){
-      // printf("%5f ",x[m][i]);
+    for (m=0; m<P; m++){
+      for(i=0; i<I; i++){
+        // printf("%5f ",x[m][i]);
 
-      if (max[i] < x[m][i]){
-        max[i] = x[m][i];
+        if (max[i] < x[m][i]){
+          max[i] = x[m][i];
+        }
       }
     }
-  }
-  /* output the max input signals */
-  // printf("%5f %5f %5f %5f\n",max[0], max[1], max[2], max[3]);
+    /* output the max input signals */
+    // printf("%5f %5f %5f %5f\n",max[0], max[1], max[2], max[3]);
 
-  for (m=0; m<P; m++){
-    for(i=0; i<I; i++){
-      x[m][i] /= max[i];
+    for (m=0; m<P; m++){
+      for(i=0; i<I; i++){
+        x[m][i] /= max[i];
+      }
     }
-  }
+    /* Initialization of the connection weights */
 
-/* output the normalized input signal */
-  // for (m=0; m<P; m++){
-  //   for(i=0; i<I; i++){
-  //     printf("%5f ",x[m][i]);
-  //   }
-  //   printf("\n");
-  // }
-    
-/* Initialization of the connection weights */
-  for(m=0; m<M; m++)
+    for(m=0; m<M; m++)
     { norm=0;
       for(i=0; i<I; i++)
-	{ w[m][i] = (double)(rand()%10001)/10000.0;
-          norm += w[m][i]*w[m][i];
-	}
+      { w[m][i] = (double)(rand()%10001)/10000.0;// - 0.5;
+        norm += w[m][i]*w[m][i];
+      }
       norm = sqrt(norm);
       for(i=0; i<I; i++)
-	w[m][i] /= norm;
+      w[m][i] /= norm;
     }
-  PrintResult(0);
-    
-/* Unsupervised learning */
-  for(q=0; q < n_update; q++)
-    { for(p=0; p<P; p++)
-	{ s0 = 0;
-	  for(m=0; m<M; m++)
-	    { s = 0;
-	      for(i=0; i<I; i++)
-		s += w[m][i]*x[p][i];
-	      if(s > s0)
-		{ s0 = s;
-		  m0 = m;
-		}
-	    }
-	  
-	  for(i=0; i<I; i++){
-	    w[m0][i] += alpha*(x[p][i] - w[m0][i]);
-          }
+    PrintResult(0);
 
-	  norm = 0;	  
-	  for(i=0; i<I; i++)
-	    norm += w[m0][i]*w[m0][i];
-	  norm = sqrt(norm);
-	  for(i=0; i<I; i++)
-	    w[m0][i] /= norm;
-	}
+    /* Unsupervised learning */
+
+    for(q=0; q < n_update; q++)
+    { for(p=0; p<P; p++)
+      { s0 = 0;
+        for(m=0; m<M; m++)
+        { s = 0;
+          for(i=0; i<I; i++)
+          s += w[m][i]*x[p][i];
+
+          s+=sqrt(s);
+          if(s > s0)
+          { s0 = s;
+            m0 = m;
+          }
+        }
+
+        for(i=0; i<I; i++)
+        w[m0][i] += alpha*(x[p][i] - w[m0][i]);
+
+        norm = 0;
+        for(i=0; i<I; i++)
+        norm += w[m0][i]*w[m0][i];
+
+        norm = sqrt(norm);
+        for(i=0; i<I; i++)
+        w[m0][i] /= norm;
+      }
       PrintResult(q);
     }
 
-/* Classify the training patterns */
-  for(p=0; p<P; p++)
+    /* Classify the training patterns */
+
+    for(p=0; p<P; p++)
     { s0 = 0;
       for(m=0; m<M; m++)
-	{ s = 0;
-	  for(i=0; i<I; i++)
-	    s += w[m][i]*x[p][i];
-	  if(s > s0)
-	    { s0 = s;
-	      m0 = m;
-	    }
-	}
+      { s = 0;
+        for(i=0; i<I; i++)
+        // s = (w[m][i]-x[p][i])*(w[m][i]-x[p][i]);
+        s += w[m][i]*x[p][i];
+
+        if(s < s0)
+        { s0 = s;
+          m0 = m;
+        }
+      }
       printf("%d\t%d\n",p,m0);
     }
-}
+  }

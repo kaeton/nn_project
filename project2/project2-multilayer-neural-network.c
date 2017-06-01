@@ -17,10 +17,10 @@
 #include <float.h>
 
 #define I             5
-#define J             3
+#define J             8
 #define K             1
 #define n_sample      16
-#define eta           0.5
+#define eta           3
 #define lambda        1.0
 #define desired_error 0.001
 #define sigmoid(x)    (1.0/(1.0+exp(-lambda*x)))
@@ -71,7 +71,7 @@ main(){
 
       for(k=0;k<K;k++){
 	Error += 0.5*pow(d[p][k]-o[k], 2.0);
-	delta_o[k]=(d[p][k]-o[k])*(1-o[k])*o[k];
+        delta_o[k]=(d[p][k]-o[k])*(1-o[k])*o[k];
       }
       
       for(j=0; j<J; j++){
@@ -88,6 +88,8 @@ main(){
       for(j=0; j<J; j++)
 	for(i=0; i<I; i++)
 	  v[j][i] += eta*delta_y[j]*x[p][i];
+    
+      // PrintResult();
     }
     printf("Error in the %d-th learning cycle = %f\n",q,Error);
   } 
@@ -147,7 +149,7 @@ void FindOutput(void){
 /*************************************************************/
 void PrintResult(void){
   int i,j,k;
-
+  
   printf("\n\n");
   printf("The connection weights in the output layer:\n");
   for(k=0; k<K; k++){
@@ -163,5 +165,11 @@ void PrintResult(void){
       printf("%5f ",v[j][i]);
     printf("\n");
   }
+
+  printf("\n\n");
+  for(j=0; j<J; j++){
+    printf("%5f ", y[j]);
+  }
+
   printf("\n\n");
 }
