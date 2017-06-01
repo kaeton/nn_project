@@ -19,10 +19,10 @@
 
 #define  I             4
 #define  P             150
-#define  M1            15
-#define  M2            15
-// #define  M1            20
-// #define  M2            20
+#define  M1            25
+#define  M2            25
+// #define  M1            11
+// #define  M2            11
 #define  N             (M1*M2)
 
 #define  frand()       (rand()%10000/10001.0)
@@ -89,6 +89,12 @@ void InputPattern(char filename[]){
       printf("%5.2f\t", x[p][i]);
     }
     fscanf(fp,"%d",&label0[p]);
+    if(label0[p] > 100){
+        label0[p] += 197;
+    } else if (label0[p] > 50){
+        label0[p] += 31;
+    }
+
     first_char = label0[p] / 27;
     second_char = label0[p] % 27 -1;
     printf("%c%c\n",
